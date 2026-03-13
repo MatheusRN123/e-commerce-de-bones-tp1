@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Estoque {
@@ -21,6 +22,9 @@ public class Estoque {
 
     @Column(name = "data_atualizacao")
     private LocalDate dataAtualizacao;
+
+    @OneToOne(mappedBy = "estoque")
+    private Bone bone;
 
 
     public Boolean verificarDisponibilidade() {
@@ -64,5 +68,13 @@ public class Estoque {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Bone getBone(){
+        return bone;
+    }
+
+    public void setBone(Bone bone){
+        this.bone = bone;
     }
 }

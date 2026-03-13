@@ -26,13 +26,16 @@ public class BoneResource {
     @RolesAllowed({"ADM", "USER"})
     public Response buscarTodos() {
         LOG.info("Requisição para buscar todos os bonés recebida");
+
         try {
             var bones = service.findAll();
             LOG.infof("Retornando %d bonés", bones.size());
             return Response.ok(bones).build();
+
         } catch (Exception e) {
             LOG.error("Erro ao buscar todos os bonés", e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+            
         }
     }
 

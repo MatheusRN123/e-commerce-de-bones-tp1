@@ -1,6 +1,7 @@
 package br.unitins.topicos1.bone.resource;
 
 import br.unitins.topicos1.bone.dto.EstoqueDTO;
+import br.unitins.topicos1.bone.dto.EstoqueDTOResponse;
 import br.unitins.topicos1.bone.service.EstoqueService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -24,6 +25,48 @@ public class EstoqueResource {
 
     @Inject
     EstoqueService service;
+
+    @GET
+    @RolesAllowed("ADM")
+    public Response BuscarTodos(){
+        LOG.info("Requisição para listar todos os estoques");
+
+        try{
+            var estoques = service.findAll();
+
+            LOG.infof("Retornando %d estoques", estoques.size());
+
+            return Response.ok(estoques).build();
+
+        }catch(Exception e){
+            LOG.error("Erro ao buscar todos os estoques", e);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+
+        }
+    }
+
+    @GET
+    @Path("/{id}")
+    @RolesAllowed("ADM")
+    public Response buscarPorId(@PathParam("id") Long id) {
+
+        LOG.infof("Requisição para buscar estoque por ID: %d", id);
+        try {
+            EstoqueDTOResponse estoque = service.findById(id);
+
+            if (estoque == null) {
+                LOG.warnf("Estoque ID %d não encontrado", id);
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
+            return Response.ok(estoque).build();
+
+        } catch (Exception e) {
+            LOG.errorf(e, "Erro ao buscar estoque ID: %d", id);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+
+        }
+    }
 
     @GET
     @Path("/{id}/disponibilidade")
