@@ -16,5 +16,6 @@ public record BoneDTO(
     Long idMarca,
     Long idModelo,
     Integer quantidadeEstoque,
-    List<Long> idsEstampas
+    List<Long> idsEstampas,
+    Double preco
 ) {}

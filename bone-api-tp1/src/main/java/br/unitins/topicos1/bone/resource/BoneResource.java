@@ -9,6 +9,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+
 import org.jboss.logging.Logger;
 
 @Path("/bones")
@@ -57,12 +58,12 @@ public class BoneResource {
         LOG.infof("Requisição para buscar boné pelo ID: %d", id);
         try {
             BoneDTOResponse response = service.findById(id);
-            if (response == null) {
-                LOG.warnf("Boné com ID %d não encontrado", id);
-                return Response.status(Status.NOT_FOUND).build();
-            }
-            LOG.infof("Boné com ID %d encontrado: %s", id, response.nome());
             return Response.ok(response).build();
+        
+        } catch (NotFoundException e) {
+            LOG.warnf("Boné com ID %d não encontrado", id);
+            return Response.status(Status.NOT_FOUND).build();
+        
         } catch (Exception e) {
             LOG.errorf(e, "Erro ao buscar boné pelo ID: %d", id);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();

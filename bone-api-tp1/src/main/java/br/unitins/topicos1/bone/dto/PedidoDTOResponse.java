@@ -9,7 +9,7 @@ import br.unitins.topicos1.bone.model.Pedido;
 public record PedidoDTOResponse(
     Long id,
     LocalDateTime data,
-    UsuarioDTOResponse idUsuario,
+    UsuarioDTOResponse Usuario,
     String cep,
     String logradouro,
     String numero,

@@ -12,6 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
@@ -37,39 +38,69 @@ public class BoneServiceImpl implements BoneService {
     @Inject
     EstampaRepository repositoryEstampa;
 
+
     @Override
     public List<BoneDTOResponse> findAll() {
-        LOG.info("Buscando todos os bonés");
-        List<BoneDTOResponse> response = repository
+        LOG.info("Buscando todos os Bonés");
+        try {
+            List<BoneDTOResponse> response = repository
                 .listAll()
                 .stream()
                 .map(BoneDTOResponse::valueOf)
                 .toList();
-        LOG.debugf("Total de bonés encontrados: %d", response.size());
-        return response;
+
+            LOG.infof("%d Bonés encontrados", response.size());
+        
+            return response;
+        } catch (Exception e) {
+            LOG.error("Erro ao buscar todos os bonés", e);
+            throw e;
+        }
     }
 
     @Override
     public List<BoneDTOResponse> findByNome(String nome) {
         LOG.infof("Buscando bonés pelo nome: %s", nome);
-        List<BoneDTOResponse> response = repository
-                .findByNome(nome)
+
+        try {
+
+            List<BoneDTOResponse> response = repository
+                .find("lower(nome) like lower(?1)", "%" + nome + "%")
+                .list()
                 .stream()
                 .map(BoneDTOResponse::valueOf)
                 .toList();
-        LOG.debugf("Bonés encontrados com nome '%s': %d", nome, response.size());
-        return response;
+
+            LOG.infof("Foram encontrados %d bonés", response.size());
+
+            return response;
+
+        } catch (Exception e) {
+            LOG.errorf(e, "Erro ao buscar bonés pelo nome: %s", nome);
+            throw e;
+        }
     }
 
     @Override
     public BoneDTOResponse findById(Long id) {
         LOG.infof("Buscando boné pelo ID: %d", id);
-        Bone bone = repository.findById(id);
-        if (bone == null) {
+
+        try {
+            Bone bone = repository.findById(id);
+
+            if (bone == null) {
             LOG.warnf("Boné com ID %d não encontrado", id);
-            return null;
+            throw new NotFoundException("Boné não encontrado");
+            }
+
+            LOG.infof("Boné com ID %d encontrado", id);
+
+            return BoneDTOResponse.valueOf(bone);
+
+        } catch (Exception e) {
+            LOG.errorf(e, "Erro ao buscar boné pelo ID: %d", id);
+            throw e;
         }
-        return BoneDTOResponse.valueOf(bone);
     }
 
     @Override
@@ -144,13 +175,15 @@ public class BoneServiceImpl implements BoneService {
     @Override
     @Transactional
     public void update(Long id, BoneDTO dto) {
-        LOG.infof("Atualizando boné com ID: %d", id);
+
         Bone bone = repository.findById(id);
 
         if (bone == null) {
-            LOG.warnf("Boné com ID %d não encontrado para atualização", id);
+            LOG.warnf("Boné com ID %d não encontrado para atualização",         id);
             throw new NotFoundException("Boné não encontrado");
         }
+
+        LOG.infof("Atualizando boné com ID: %d", id);
 
         try {
             bone.setNome(dto.nome());
@@ -162,12 +195,21 @@ public class BoneServiceImpl implements BoneService {
             bone.setBordado(dto.bordado());
 
             Material material = repositoryMaterial.findById(dto.idMaterial());
+            if (material == null) {
+                throw new NotFoundException("Material não encontrado");
+            }
             bone.setMaterial(material);
 
             Marca marca = repositoryMarca.findById(dto.idMarca());
+            if (marca == null) {
+                throw new NotFoundException("Marca não encontrada");
+            }
             bone.setMarca(marca);
 
             Modelo modelo = repositoryModelo.findById(dto.idModelo());
+            if (modelo == null) {
+                throw new NotFoundException("Modelo não encontrado");
+            }
             bone.setModelo(modelo);
 
             if (bone.getEstampas() == null) {
@@ -215,17 +257,18 @@ public class BoneServiceImpl implements BoneService {
     @Override
     @Transactional
     public void delete(Long id) {
-        LOG.infof("Excluindo boné com ID: %d", id);
-        try {
-            boolean deleted = repository.deleteById(id);
-            if (deleted) {
-                LOG.infof("Boné com ID %d excluído com sucesso", id);
-            } else {
-                LOG.warnf("Boné com ID %d não encontrado para exclusão", id);
-            }
-        } catch (Exception e) {
-            LOG.errorf(e, "Erro ao excluir boné com ID %d", id);
-            throw e;
+
+        LOG.infof("Deletando boné com ID: %d", id);
+
+        Bone bone = repository.findById(id);
+
+        if (bone == null) {
+            LOG.warnf("Boné com ID %d não encontrado para exclusão",    id);
+            throw new NotFoundException("Boné não encontrado");
         }
+
+        repository.delete(bone);
+
+        LOG.infof("Boné com ID %d deletado com sucesso", id);
     }
 }

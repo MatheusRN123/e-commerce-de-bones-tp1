@@ -55,10 +55,12 @@ public class ItemPedido {
     public Double getPreco() {
         return preco;
     }
+
     public void setPreco(Double preco) {
         this.preco = preco;
     }
+
     public Double getSubTotal(){
-        return quantidade*preco;
+        return quantidade * preco;
     }
 }

@@ -20,7 +20,8 @@ public record BoneDTOResponse(
     String nomeMarca,
     EstoqueDTOResponse estoque,
     String nomeModelo,
-    List<?> estampas
+    List<?> estampas,
+    Double preco
 )  {
     
         public static BoneDTOResponse valueOf(Bone bone){
@@ -47,7 +48,8 @@ public record BoneDTOResponse(
             bone.getMarca().getNome(),
             EstoqueDTOResponse.valueOf(bone.getEstoque()),
             bone.getModelo().getNome(),
-            estampas
+            estampas,
+            bone.getPreco()
         );
     }
 }

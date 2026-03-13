@@ -64,7 +64,7 @@ class EnderecoResourceUnitTest {
 
     @Test
     void testIncluirEndereco() {
-        EnderecoDTO dto = new EnderecoDTO("12345678", "Rua Teste", "10", 1L);
+        EnderecoDTO dto = new EnderecoDTO("Aas", "12345678", "Rua Teste", "10", 1L);
         EnderecoDTOResponse dtoResponse = mock(EnderecoDTOResponse.class);
 
         when(enderecoService.create(dto)).thenReturn(dtoResponse);
@@ -79,7 +79,7 @@ class EnderecoResourceUnitTest {
     @Test
     void testAlterarEndereco() {
         Long id = 1L;
-        EnderecoDTO dto = new EnderecoDTO("87654321", "Rua Atualizada", "15", 1L);
+        EnderecoDTO dto = new EnderecoDTO("asdasd", "87654321", "Rua Atualizada", "15", 1L);
 
         doNothing().when(enderecoService).update(id, dto);
 

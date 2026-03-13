@@ -7,7 +7,6 @@ public record ItemPedidoDTOResponse(
     Long idPedido,
     BoneDTOResponse bone,
     Integer quantidade,
-    Double preco,
     Double subtotal
 ) {
     public static ItemPedidoDTOResponse valueOf(ItemPedido itemPedido){
@@ -19,7 +18,6 @@ public record ItemPedidoDTOResponse(
             idPedido,
             BoneDTOResponse.valueOf(itemPedido.getBone()),
             itemPedido.getQuantidade(),
-            itemPedido.getPreco(),
             itemPedido.getSubTotal()
         );
     }

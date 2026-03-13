@@ -1,5 +1,6 @@
 package br.unitins.topicos1.bone.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +19,16 @@ public class Endereco {
     private String logradouro;
     private String numero;
 
+    @Column(name = "nome_destinatario")
+    private String nomeDestinatario;
+
     @ManyToOne
     @JoinColumn(name = "id_cidade")
     private Cidade cidade;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
 
     public Long getId() {
@@ -61,5 +69,21 @@ public class Endereco {
 
     public void setCidade(Cidade cidade) {
         this.cidade = cidade;
+    }
+
+    public Usuario getUsuario(){
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario){
+        this.usuario = usuario;
+    }
+
+    public String getNomeDestinatario(){
+        return nomeDestinatario;
+    }
+
+    public void setNomeDestinatario(String nomeDestinatario){
+        this.nomeDestinatario = nomeDestinatario;
     }
 }

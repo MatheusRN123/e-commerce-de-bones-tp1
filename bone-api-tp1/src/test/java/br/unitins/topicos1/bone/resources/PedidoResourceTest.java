@@ -41,11 +41,10 @@ public class PedidoResourceTest {
 
     @Test
     public void testIncluirPedido() {
-        ItemPedidoDTO item = new ItemPedidoDTO(1L, 2, 50.0);
+        ItemPedidoDTO item = new ItemPedidoDTO(1L, 2);
         PagamentoDTO pagamento = new PagamentoDTO("PIX", new PixDTO("chavepix@example.com", "EMAIL"), null, null);
 
         PedidoDTO dto = new PedidoDTO(
-            1L,          // idUsuario
             1L,          // idEndereco
             List.of(item),
             pagamento
@@ -61,11 +60,10 @@ public class PedidoResourceTest {
 
     @Test
     public void testAlterarPedido() {
-        ItemPedidoDTO item = new ItemPedidoDTO(1L, 3, 55.0);
+        ItemPedidoDTO item = new ItemPedidoDTO(1L, 3);
         PagamentoDTO pagamento = new PagamentoDTO("PIX", new PixDTO("novachave@example.com", "EMAIL"), null, null);
 
         PedidoDTO dto = new PedidoDTO(
-            1L,
             1L,
             List.of(item),
             pagamento

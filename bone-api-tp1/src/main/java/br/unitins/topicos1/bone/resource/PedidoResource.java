@@ -45,9 +45,9 @@ public class PedidoResource {
     }
 
     @POST
-    @RolesAllowed("ADM")
+    @RolesAllowed("USER")
     public Response incluirPedido(PedidoDTO dto) {
-        LOG.infof("Requisição recebida: criar pedido para usuário ID %d", dto.idUsuario());
+        LOG.info("Requisição recebida: criar pedido");
         PedidoDTOResponse response = service.create(dto);
         LOG.infof("Pedido criado com sucesso: ID %d", response.id());
         return Response.status(Status.CREATED).entity(response).build();
@@ -55,7 +55,7 @@ public class PedidoResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed("ADM")
+    @RolesAllowed({"ADM","USER"})
     public Response alterarPedido(@PathParam("id") Long id, PedidoDTO dto) {
         LOG.infof("Requisição recebida: atualizar pedido ID %d", id);
         service.update(id, dto);
@@ -65,7 +65,7 @@ public class PedidoResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed("ADM")
+    @RolesAllowed({"ADM","USER"})
     public Response deletarPedido(@PathParam("id") Long id) {
         LOG.infof("Requisição recebida: deletar pedido ID %d", id);
         service.delete(id);

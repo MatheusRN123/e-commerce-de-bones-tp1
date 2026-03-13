@@ -11,10 +11,12 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+
 import org.jboss.logging.Logger;
 
 @Path("/enderecos")
@@ -28,7 +30,7 @@ public class EnderecoResource {
     EnderecoService service;
 
     @GET
-    @RolesAllowed({"ADM", "USER"})
+    @RolesAllowed({"ADM","USER"})
     public Response buscarTodos() {
         LOG.info("Requisição para buscar todos os endereços recebida");
         try {
@@ -43,8 +45,8 @@ public class EnderecoResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"ADM", "USER"})
-    public Response buscarPorId(Long id) {
+    @RolesAllowed({"ADM","USER"})
+    public Response buscarPorId(@PathParam("id") Long id) {
         LOG.infof("Requisição para buscar endereço pelo ID: %d", id);
         try {
             EnderecoDTOResponse response = service.findById(id);
@@ -61,7 +63,7 @@ public class EnderecoResource {
     }
 
     @POST
-    @RolesAllowed("ADM")
+    @RolesAllowed({"ADM","USER"})
     public Response incluirEndereco(EnderecoDTO dto) {
         LOG.infof("Requisição para criar endereço: %s, CEP: %s", dto.logradouro(), dto.cep());
         try {
@@ -76,8 +78,8 @@ public class EnderecoResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed("ADM")
-    public Response alterarEndereco(Long id, EnderecoDTO dto) {
+    @RolesAllowed({"ADM","USER"})
+    public Response alterarEndereco(@PathParam("id") Long id, EnderecoDTO dto) {
         LOG.infof("Requisição para atualizar endereço ID: %d", id);
         try {
             service.update(id, dto);
@@ -91,8 +93,8 @@ public class EnderecoResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed("ADM")
-    public Response deletarEndereco(Long id) {
+    @RolesAllowed({"ADM","USER"})
+    public Response deletarEndereco(@PathParam("id") Long id) {
         LOG.infof("Requisição para deletar endereço ID: %d", id);
         try {
             service.delete(id);

@@ -50,6 +50,8 @@ public class Bone {
     @JoinColumn(name = "id_modelo")
     private Modelo modelo;
 
+    private Double preco;
+
     @ManyToMany
     @JoinTable(
         name = "bone_estampa",
@@ -168,5 +170,12 @@ public class Bone {
         this.estampas = estampas;
     }
 
+    public Double getPreco(){
+        return preco;
+    }
+
+    public void setPreco(Double preco){
+        this.preco = preco;
+    }
     
 }
