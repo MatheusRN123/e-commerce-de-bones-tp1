@@ -17,7 +17,7 @@ public record EstoqueDTOResponse(
             return null;
         }
 
-        long idBone = estoque.getBone() != null ? estoque.getBone().getId() : null;
+        Long idBone = estoque.getBone() != null ? estoque.getBone().getId() : null;
         
         return new EstoqueDTOResponse(
             estoque.getId(),
