@@ -24,20 +24,41 @@ public class BoneResource {
 
     @GET
     @RolesAllowed({"ADM", "USER"})
-    public Response buscarTodos() {
-        LOG.info("Requisição para buscar todos os bonés recebida");
+    public Response buscarTodos(@QueryParam("page") @DefaultValue("0") int page,
+                                @QueryParam("pageSize") @DefaultValue("100") int pageSize) {
+        LOG.infof("Requisição para buscar bonés recebida [page=%d, pageSize=%d]", page, pageSize);
 
-        try {
-            var bones = service.findAll();
+    try {
+            if (page < 0) {
+                return Response.status(Status.BAD_REQUEST)
+                        .entity("Page não pode ser menor que 0")
+                        .build();
+            }
+        
+            if (pageSize <= 0) {
+                return Response.status(Status.BAD_REQUEST)
+                        .entity("pageSize deve ser maior que 0")
+                        .build();
+            }
+        
+            if (pageSize > 100) {
+                pageSize = 100;
+            }
+        
+            var bones = service.findAll(page, pageSize);
             LOG.infof("Retornando %d bonés", bones.size());
             return Response.ok(bones).build();
-
+        
+        } catch (IllegalArgumentException e) {
+            LOG.warnf("Parâmetros inválidos para paginação: %s", e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+        
         } catch (Exception e) {
             LOG.error("Erro ao buscar todos os bonés", e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-            
         }
     }
+    
 
     @GET
     @Path("/find/{nome}")
@@ -71,6 +92,12 @@ public class BoneResource {
             LOG.errorf(e, "Erro ao buscar boné pelo ID: %d", id);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GET
+    @Path("/count")
+    public Response quantidadeBones(){
+        return Response.ok(service.count()).build();
     }
 
     @POST

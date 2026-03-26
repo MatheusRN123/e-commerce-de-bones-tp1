@@ -8,6 +8,7 @@ import br.unitins.topicos1.bone.dto.BoneDTO;
 import br.unitins.topicos1.bone.dto.BoneDTOResponse;
 import br.unitins.topicos1.bone.model.*;
 import br.unitins.topicos1.bone.repository.*;
+import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -40,18 +41,31 @@ public class BoneServiceImpl implements BoneService {
 
 
     @Override
-    public List<BoneDTOResponse> findAll() {
-        LOG.info("Buscando todos os Bonés");
+    public List<BoneDTOResponse> findAll(int page, int pageSize) {
+        LOG.infof("Buscando bonés [page=%d, pageSize=%d]", page, pageSize);
+
         try {
-            List<BoneDTOResponse> response = repository
-                .listAll()
+            if (page < 0) {
+                throw new IllegalArgumentException("Page não pode ser menor que 0");
+            }
+
+            if (pageSize <= 0) {
+                throw new IllegalArgumentException("pageSize deve ser maior que 0");
+            }
+
+            List<Bone> bones = repository
+                    .findAll()
+                    .page(Page.of(page, pageSize))
+                    .list();
+
+            List<BoneDTOResponse> response = bones
                 .stream()
                 .map(BoneDTOResponse::valueOf)
                 .toList();
 
-            LOG.infof("%d Bonés encontrados", response.size());
-        
+            LOG.infof("%d bonés encontrados", response.size());
             return response;
+
         } catch (Exception e) {
             LOG.error("Erro ao buscar todos os bonés", e);
             throw e;
@@ -270,5 +284,10 @@ public class BoneServiceImpl implements BoneService {
         repository.delete(bone);
 
         LOG.infof("Boné com ID %d deletado com sucesso", id);
+    }
+
+    @Override
+    public long count(){
+        return repository.count();
     }
 }
