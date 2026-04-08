@@ -5,6 +5,7 @@ import br.unitins.topicos1.bone.dto.EstadoDTOResponse;
 import br.unitins.topicos1.bone.service.EstadoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -78,7 +79,7 @@ public class EstadoResource {
 
     @POST
     @RolesAllowed("ADM")
-    public Response incluirEstado(EstadoDTO dto) {
+    public Response incluirEstado(@Valid EstadoDTO dto) {
         LOG.infof("Requisição para criar estado: %s (%s)", dto.nome(), dto.sigla());
         try {
             var response = service.create(dto);
@@ -93,7 +94,7 @@ public class EstadoResource {
     @PUT
     @Path("/{id}")
     @RolesAllowed("ADM")
-    public Response alterarEstado(Long id, EstadoDTO dto) {
+    public Response alterarEstado(Long id, @Valid EstadoDTO dto) {
         LOG.infof("Requisição para atualizar estado ID: %d", id);
         try {
             service.update(id, dto);
