@@ -45,7 +45,7 @@ public record BoneDTOResponse(
             bone.getTamanhoAba(),
             bone.getProfundidade(),
             bone.getCircunferencia(),
-            bone.getBordado().getNome(),
+            bone.getBordado() != null ? bone.getBordado().getNome() : null,
             bone.getMarca().getNome(),
             // EstoqueDTOResponse.valueOf(bone.getEstoque()),
             bone.getEstoque() != null ? bone.getEstoque().getQuantidade() : null,
