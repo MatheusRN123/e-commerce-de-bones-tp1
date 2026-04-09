@@ -7,7 +7,7 @@ import br.unitins.topicos1.bone.dto.MaterialDTOResponse;
 
 public interface MaterialService {
     
-    List<MaterialDTOResponse> findAll();
+    List<MaterialDTOResponse> findAll(int page, int pageSize);
     List<MaterialDTOResponse> findByNome(String nome);
     MaterialDTOResponse findById(Long id);
     MaterialDTOResponse create(MaterialDTO dto);

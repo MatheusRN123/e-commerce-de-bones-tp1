@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.jboss.logging.Logger;
+import io.quarkus.panache.common.Page;
 
 @ApplicationScoped
 public class ModeloServiceImpl implements ModeloService {
@@ -20,14 +21,35 @@ public class ModeloServiceImpl implements ModeloService {
     ModeloRepository repository;
 
     @Override
-    public List<ModeloDTOResponse> findAll() {
-        LOG.info("Requisição para buscar todos os modelos");
-        List<ModeloDTOResponse> response = repository.listAll()
+    public List<ModeloDTOResponse> findAll(int page, int pageSize) {
+        LOG.infof("Buscando modelos [page=%d, pageSize=%d]", page, pageSize);
+
+        try {
+            if (page < 0) {
+                throw new IllegalArgumentException("Page não pode ser menor que 0");
+            }
+
+            if (pageSize <= 0) {
+                throw new IllegalArgumentException("pageSize deve ser maior que 0");
+            }
+
+            List<Modelo> modelos = repository
+                    .findAll()
+                    .page(Page.of(page, pageSize))
+                    .list();
+
+            List<ModeloDTOResponse> response = modelos
                 .stream()
                 .map(ModeloDTOResponse::valueOf)
                 .toList();
-        LOG.info("Resposta enviada para buscar todos os modelos");
-        return response;
+
+            LOG.infof("%d modelos encontrados", response.size());
+            return response;
+
+        } catch (Exception e) {
+            LOG.error("Erro ao buscar todos os modelos", e);
+            throw e;
+        }
     }
 
     @Override

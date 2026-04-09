@@ -3,11 +3,7 @@ package br.unitins.topicos1.bone.resource;
 import br.unitins.topicos1.bone.service.EstampaService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -25,15 +21,36 @@ public class EstampaResource {
 
     @GET
     @RolesAllowed({"ADM", "USER"})
-    public Response buscarTodos() {
-        LOG.info("Requisição para buscar todas as estampas");
+    public Response buscarTodos(@QueryParam("page") @DefaultValue("0") int page,
+                                @QueryParam("pageSize") @DefaultValue("100") int pageSize) {
+        LOG.infof("Requisição para buscar estampas recebida [page=%d, pageSize=%d]", page, pageSize);
+
         try {
-            var response = service.findAll();
-            LOG.infof("Retornando %d estampas", response.size());
-            return Response.ok(response).build();
+            if (page < 0) {
+                return Response.status(Status.BAD_REQUEST)
+                        .entity("Page não pode ser menor que 0")
+                        .build();
+            }
+
+            if (pageSize <= 0) {
+                return Response.status(Status.BAD_REQUEST)
+                        .entity("pageSize deve ser maior que 0")
+                        .build();
+            }
+
+            if (pageSize > 100) {
+                pageSize = 100;
+            }
+
+            var estampas = service.findAll(page, pageSize);
+            LOG.infof("Retornando %d estampas", estampas.size());
+            return Response.ok(estampas).build();
+
         } catch (Exception e) {
             LOG.error("Erro ao buscar todas as estampas", e);
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro interno do servidor")
+                    .build();
         }
     }
 

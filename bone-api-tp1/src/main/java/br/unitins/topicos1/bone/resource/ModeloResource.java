@@ -4,13 +4,7 @@ import br.unitins.topicos1.bone.dto.ModeloDTO;
 import br.unitins.topicos1.bone.service.ModeloService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -28,11 +22,37 @@ public class ModeloResource {
 
     @GET
     @RolesAllowed({"ADM", "USER"})
-    public Response buscarTodos() {
-        LOG.info("Requisição GET /modelos");
-        Response response = Response.ok(service.findAll()).build();
-        LOG.info("Resposta enviada para GET /modelos");
-        return response;
+    public Response buscarTodos(@QueryParam("page") @DefaultValue("0") int page,
+                                @QueryParam("pageSize") @DefaultValue("100") int pageSize) {
+        LOG.infof("Requisição para buscar modelos recebida [page=%d, pageSize=%d]", page, pageSize);
+
+        try {
+            if (page < 0) {
+                return Response.status(Status.BAD_REQUEST)
+                        .entity("Page não pode ser menor que 0")
+                        .build();
+            }
+
+            if (pageSize <= 0) {
+                return Response.status(Status.BAD_REQUEST)
+                        .entity("pageSize deve ser maior que 0")
+                        .build();
+            }
+
+            if (pageSize > 100) {
+                pageSize = 100;
+            }
+
+            var modelos = service.findAll(page, pageSize);
+            LOG.infof("Retornando %d modelos", modelos.size());
+            return Response.ok(modelos).build();
+
+        } catch (Exception e) {
+            LOG.error("Erro ao buscar todos os modelos", e);
+            return Response.status(Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro interno do servidor")
+                    .build();
+        }
     }
 
     @GET

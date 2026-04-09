@@ -7,7 +7,7 @@ import br.unitins.topicos1.bone.dto.MarcaDTOResponse;
 
 public interface MarcaService {
     
-    List<MarcaDTOResponse> findAll();
+    List<MarcaDTOResponse> findAll(int page, int pageSize);
     List<MarcaDTOResponse> findByNome(String nome);
     MarcaDTOResponse findById(Long id);
     MarcaDTOResponse create(MarcaDTO dto);

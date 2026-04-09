@@ -10,6 +10,6 @@ public interface EstoqueService {
     Boolean verificarDisponibilidade(Long id);
     void atualizarQuantidade(Long id, EstoqueDTO dto);
     void adicionarQuantidade(Long id, EstoqueDTO dto);
-    List<EstoqueDTOResponse> findAll();
+    List<EstoqueDTOResponse> findAll(int page, int pageSize);
     EstoqueDTOResponse findById(Long id);
 }

@@ -5,6 +5,7 @@ import br.unitins.topicos1.bone.dto.BoneDTOResponse;
 import br.unitins.topicos1.bone.service.BoneService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -102,7 +103,7 @@ public class BoneResource {
 
     @POST
     @RolesAllowed("ADM")
-    public Response incluirBone(BoneDTO dto) {
+    public Response incluirBone(@Valid BoneDTO dto) {
         LOG.infof("Requisição para criar boné: %s", dto.nome());
         try {
             BoneDTOResponse response = service.create(dto);
@@ -117,7 +118,7 @@ public class BoneResource {
     @PUT
     @Path("/{id}")
     @RolesAllowed("ADM")
-    public Response alterarBone(@PathParam("id") Long id, BoneDTO dto) {
+    public Response alterarBone(@PathParam("id") Long id, @Valid BoneDTO dto) {
         LOG.infof("Requisição para atualizar boné ID: %d", id);
         try {
             service.update(id, dto);

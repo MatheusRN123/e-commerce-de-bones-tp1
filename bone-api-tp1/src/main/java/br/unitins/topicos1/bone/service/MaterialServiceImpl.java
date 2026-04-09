@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.jboss.logging.Logger;
+import io.quarkus.panache.common.Page;
 
 @ApplicationScoped
 public class MaterialServiceImpl implements MaterialService {
@@ -20,15 +21,35 @@ public class MaterialServiceImpl implements MaterialService {
     MaterialRepository repository;
 
     @Override
-    public List<MaterialDTOResponse> findAll(){
-        LOG.info("Buscando todos os materiais");
-        List<MaterialDTOResponse> materiais = repository
-                    .listAll()
-                    .stream()
-                    .map(MaterialDTOResponse::valueOf)
-                    .toList();
-        LOG.infof("Encontrados %d materiais", materiais.size());
-        return materiais;
+    public List<MaterialDTOResponse> findAll(int page, int pageSize) {
+        LOG.infof("Buscando materiais [page=%d, pageSize=%d]", page, pageSize);
+
+        try {
+            if (page < 0) {
+                throw new IllegalArgumentException("Page não pode ser menor que 0");
+            }
+
+            if (pageSize <= 0) {
+                throw new IllegalArgumentException("pageSize deve ser maior que 0");
+            }
+
+            List<Material> materiais = repository
+                    .findAll()
+                    .page(Page.of(page, pageSize))
+                    .list();
+
+            List<MaterialDTOResponse> response = materiais
+                .stream()
+                .map(MaterialDTOResponse::valueOf)
+                .toList();
+
+            LOG.infof("%d materiais encontrados", response.size());
+            return response;
+
+        } catch (Exception e) {
+            LOG.error("Erro ao buscar todos os materiais", e);
+            throw e;
+        }
     }
 
     @Override

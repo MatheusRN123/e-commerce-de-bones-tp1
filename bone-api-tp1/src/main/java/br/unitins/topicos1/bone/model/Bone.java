@@ -15,6 +15,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Bone {
@@ -23,7 +24,11 @@ public class Bone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_bone")
     private Long id;
+    
+    @NotNull
     private String nome;
+    
+    @NotNull
     private String cor;
 
     @Column(name = "categoria_aba")
@@ -32,7 +37,6 @@ public class Bone {
     @Column(name = "tamanho_aba")
     private Float tamanhoAba;
     private Float profundidade;
-
     private String circunferencia;
 
     @Enumerated(EnumType.STRING)
@@ -40,16 +44,20 @@ public class Bone {
 
     @ManyToOne
     @JoinColumn(name = "id_material")
+    @NotNull
     private Material material;
 
     @ManyToOne
     @JoinColumn(name = "id_marca")
+    @NotNull
     private Marca marca;
 
     @ManyToOne
     @JoinColumn(name = "id_modelo")
+    @NotNull
     private Modelo modelo;
 
+    @NotNull
     private Double preco;
 
     @ManyToMany
@@ -62,6 +70,7 @@ public class Bone {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_estoque")
+    @NotNull
     private Estoque estoque;
 
 

@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 import org.jboss.logging.Logger;
+import io.quarkus.panache.common.Page;
 
 @ApplicationScoped
 public class EstoqueServiceImpl implements EstoqueService {
@@ -21,18 +22,33 @@ public class EstoqueServiceImpl implements EstoqueService {
     EstoqueRepository repository;
 
     @Override
-    public List<EstoqueDTOResponse> findAll(){
-        LOG.info("Buscando todos os estoques");
+    public List<EstoqueDTOResponse> findAll(int page, int pageSize) {
+        LOG.infof("Buscando estoques [page=%d, pageSize=%d]", page, pageSize);
 
-        try{
-            return repository
-                    .listAll()
-                    .stream()
-                    .map(EstoqueDTOResponse::valueOf)
-                    .toList();
+        try {
+            if (page < 0) {
+                throw new IllegalArgumentException("Page não pode ser menor que 0");
+            }
 
-        } catch(Exception e){
-            LOG.error("Erro ao buscar estoques", e);
+            if (pageSize <= 0) {
+                throw new IllegalArgumentException("pageSize deve ser maior que 0");
+            }
+
+            List<Estoque> estoques = repository
+                    .findAll()
+                    .page(Page.of(page, pageSize))
+                    .list();
+
+            List<EstoqueDTOResponse> response = estoques
+                .stream()
+                .map(EstoqueDTOResponse::valueOf)
+                .toList();
+
+            LOG.infof("%d estoques encontrados", response.size());
+            return response;
+
+        } catch (Exception e) {
+            LOG.error("Erro ao buscar todos os estoques", e);
             throw e;
         }
     }

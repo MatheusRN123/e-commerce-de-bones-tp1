@@ -9,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 import org.jboss.logging.Logger;
+import io.quarkus.panache.common.Page;
 
 @ApplicationScoped
 public class EstampaServiceImpl implements EstampaService {
@@ -19,15 +20,31 @@ public class EstampaServiceImpl implements EstampaService {
     EstampaRepository repository;
 
     @Override
-    public List<EstampaDTOResponse> findAll() {
-        LOG.info("Buscando todas as estampas");
+    public List<EstampaDTOResponse> findAll(int page, int pageSize) {
+        LOG.infof("Buscando estampas [page=%d, pageSize=%d]", page, pageSize);
+
         try {
-            var estampas = repository.listAll()
-                    .stream()
-                    .map(EstampaDTOResponse::valueOf)
-                    .toList();
-            LOG.infof("Retornando %d estampas", estampas.size());
-            return estampas;
+            if (page < 0) {
+                throw new IllegalArgumentException("Page não pode ser menor que 0");
+            }
+
+            if (pageSize <= 0) {
+                throw new IllegalArgumentException("pageSize deve ser maior que 0");
+            }
+
+            List<Estampa> estampas = repository
+                    .findAll()
+                    .page(Page.of(page, pageSize))
+                    .list();
+
+            List<EstampaDTOResponse> response = estampas
+                .stream()
+                .map(EstampaDTOResponse::valueOf)
+                .toList();
+
+            LOG.infof("%d estampas encontradas", response.size());
+            return response;
+
         } catch (Exception e) {
             LOG.error("Erro ao buscar todas as estampas", e);
             throw e;

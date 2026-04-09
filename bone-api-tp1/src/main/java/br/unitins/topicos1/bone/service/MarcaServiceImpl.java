@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.jboss.logging.Logger;
+import io.quarkus.panache.common.Page;
 
 @ApplicationScoped
 public class MarcaServiceImpl implements MarcaService {
@@ -20,14 +21,35 @@ public class MarcaServiceImpl implements MarcaService {
     MarcaRepository repository;
 
     @Override
-    public List<MarcaDTOResponse> findAll(){
-        LOG.info("Requisição para buscar todas as marcas");
-        var marcas = repository.listAll()
+    public List<MarcaDTOResponse> findAll(int page, int pageSize) {
+        LOG.infof("Buscando marcas [page=%d, pageSize=%d]", page, pageSize);
+
+        try {
+            if (page < 0) {
+                throw new IllegalArgumentException("Page não pode ser menor que 0");
+            }
+
+            if (pageSize <= 0) {
+                throw new IllegalArgumentException("pageSize deve ser maior que 0");
+            }
+
+            List<Marca> marcas = repository
+                    .findAll()
+                    .page(Page.of(page, pageSize))
+                    .list();
+
+            List<MarcaDTOResponse> response = marcas
                 .stream()
                 .map(MarcaDTOResponse::valueOf)
                 .toList();
-        LOG.infof("Retornando %d marcas", marcas.size());
-        return marcas;
+
+            LOG.infof("%d marcas encontradas", response.size());
+            return response;
+
+        } catch (Exception e) {
+            LOG.error("Erro ao buscar todas as marcas", e);
+            throw e;
+        }
     }
 
     @Override

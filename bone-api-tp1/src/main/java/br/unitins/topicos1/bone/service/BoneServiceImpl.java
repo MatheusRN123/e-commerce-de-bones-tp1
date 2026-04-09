@@ -130,6 +130,7 @@ public class BoneServiceImpl implements BoneService {
             bone.setProfundidade(dto.profundidade());
             bone.setCircunferencia(dto.circunferencia());
             bone.setBordado(dto.bordado());
+            bone.setPreco(dto.preco());
 
             Material material = repositoryMaterial.findById(dto.idMaterial());
             if (material == null){
@@ -207,6 +208,7 @@ public class BoneServiceImpl implements BoneService {
             bone.setProfundidade(dto.profundidade());
             bone.setCircunferencia(dto.circunferencia());
             bone.setBordado(dto.bordado());
+            bone.setPreco(dto.preco());
 
             Material material = repositoryMaterial.findById(dto.idMaterial());
             if (material == null) {

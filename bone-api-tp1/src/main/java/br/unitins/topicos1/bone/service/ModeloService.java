@@ -7,7 +7,7 @@ import br.unitins.topicos1.bone.dto.ModeloDTOResponse;
 
 public interface ModeloService {
     
-    List<ModeloDTOResponse> findAll();
+    List<ModeloDTOResponse> findAll(int page, int pageSize);
     List<ModeloDTOResponse> findByNome(String nome);
     ModeloDTOResponse findById(Long id);
     ModeloDTOResponse create(ModeloDTO dto);

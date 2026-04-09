@@ -18,7 +18,8 @@ public record BoneDTOResponse(
     String circunferencia,
     Bordado bordado,
     String nomeMarca,
-    EstoqueDTOResponse estoque,
+    //EstoqueDTOResponse estoque,
+    Integer quantidadeEstoque,
     String nomeModelo,
     List<?> estampas,
     Double preco
@@ -46,7 +47,8 @@ public record BoneDTOResponse(
             bone.getCircunferencia(),
             bone.getBordado(),
             bone.getMarca().getNome(),
-            EstoqueDTOResponse.valueOf(bone.getEstoque()),
+            // EstoqueDTOResponse.valueOf(bone.getEstoque()),
+            bone.getEstoque() != null ? bone.getEstoque().getQuantidade() : null,
             bone.getModelo().getNome(),
             estampas,
             bone.getPreco()
