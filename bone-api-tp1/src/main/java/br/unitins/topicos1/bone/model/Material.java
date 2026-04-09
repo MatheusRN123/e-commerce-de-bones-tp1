@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Material {
@@ -13,6 +14,8 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_material")
     private Long id;
+    
+    @NotNull
     private String nome;
 
     

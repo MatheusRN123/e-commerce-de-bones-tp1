@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Modelo {
@@ -13,8 +14,12 @@ public class Modelo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_modelo")
     private Long id;
+    
+    @NotNull
     private String nome;
+    
     private String categoria;
+    
     private String estilo;
     
     

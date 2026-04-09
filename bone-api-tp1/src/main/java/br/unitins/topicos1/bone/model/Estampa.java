@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,8 +24,12 @@ public abstract class Estampa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_estampa")
     private Long id;
+    
+    @NotNull
     private String nome;
+    
     private String posicao;
+    
     private String descricao;
 
     @ManyToMany(mappedBy = "estampas")

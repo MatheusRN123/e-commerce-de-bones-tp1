@@ -3,7 +3,6 @@ package br.unitins.topicos1.bone.dto;
 import java.util.List;
 
 import br.unitins.topicos1.bone.model.Bone;
-import br.unitins.topicos1.bone.model.Bordado;
 import br.unitins.topicos1.bone.model.EstampaBordada;
 import br.unitins.topicos1.bone.model.EstampaDigital;
 
@@ -16,7 +15,8 @@ public record BoneDTOResponse(
     Float tamanhoAba,
     Float profundidade,
     String circunferencia,
-    Bordado bordado,
+    //Bordado bordado,
+    String bordado,
     String nomeMarca,
     //EstoqueDTOResponse estoque,
     Integer quantidadeEstoque,
@@ -45,7 +45,7 @@ public record BoneDTOResponse(
             bone.getTamanhoAba(),
             bone.getProfundidade(),
             bone.getCircunferencia(),
-            bone.getBordado(),
+            bone.getBordado().getNome(),
             bone.getMarca().getNome(),
             // EstoqueDTOResponse.valueOf(bone.getEstoque()),
             bone.getEstoque() != null ? bone.getEstoque().getQuantidade() : null,

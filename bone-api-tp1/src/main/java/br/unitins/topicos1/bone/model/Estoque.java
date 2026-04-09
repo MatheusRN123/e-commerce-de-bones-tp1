@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Estoque {
@@ -18,9 +19,11 @@ public class Estoque {
     private Long id;
 
     @Column(nullable = false)
+    @NotNull
     private Integer quantidade = 0;
 
     @Column(name = "data_atualizacao")
+    @NotNull
     private LocalDate dataAtualizacao;
 
     @OneToOne(mappedBy = "estoque")
