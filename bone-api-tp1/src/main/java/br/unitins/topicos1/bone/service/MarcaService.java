@@ -13,4 +13,5 @@ public interface MarcaService {
     MarcaDTOResponse create(MarcaDTO dto);
     void update(Long id, MarcaDTO dto);
     void delete(Long id);
+    long count();
 }

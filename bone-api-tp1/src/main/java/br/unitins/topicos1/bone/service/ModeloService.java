@@ -13,4 +13,5 @@ public interface ModeloService {
     ModeloDTOResponse create(ModeloDTO dto);
     void update(Long id, ModeloDTO dto);
     void delete(Long id);
+    long count();
 }

@@ -94,6 +94,15 @@ public class MarcaResource {
         return Response.noContent().build();
     }
 
+    @GET
+    @Path("/count")
+    public Response count() {
+        LOG.info("Requisição para contar marcas");
+        long count = service.count();
+        LOG.infof("Total de marcas: %d", count);
+        return Response.ok(count).build();
+    }
+
     @DELETE
     @Path("/{id}")
     @RolesAllowed("ADM")

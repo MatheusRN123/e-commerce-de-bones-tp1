@@ -13,4 +13,5 @@ public interface MaterialService {
     MaterialDTOResponse create(MaterialDTO dto);
     void update(Long id, MaterialDTO dto);
     void delete(Long id);
+    long count();
 }

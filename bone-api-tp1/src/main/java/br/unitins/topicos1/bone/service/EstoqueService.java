@@ -12,4 +12,6 @@ public interface EstoqueService {
     void adicionarQuantidade(Long id, EstoqueDTO dto);
     List<EstoqueDTOResponse> findAll(int page, int pageSize);
     EstoqueDTOResponse findById(Long id);
+    EstoqueDTOResponse findByIdBone(Long boneId);
+    long count();
 }

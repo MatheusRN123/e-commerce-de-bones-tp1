@@ -101,4 +101,9 @@ public class MarcaServiceImpl implements MarcaService {
         repository.deleteById(id);
         LOG.infof("Marca ID %d deletada com sucesso", id);
     }
+
+    @Override
+    public long count(){
+        return repository.count();
+    }
 }

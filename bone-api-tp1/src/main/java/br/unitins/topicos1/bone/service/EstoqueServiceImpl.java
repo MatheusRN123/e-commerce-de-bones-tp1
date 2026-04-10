@@ -2,7 +2,9 @@ package br.unitins.topicos1.bone.service;
 
 import br.unitins.topicos1.bone.dto.EstoqueDTO;
 import br.unitins.topicos1.bone.dto.EstoqueDTOResponse;
+import br.unitins.topicos1.bone.model.Bone;
 import br.unitins.topicos1.bone.model.Estoque;
+import br.unitins.topicos1.bone.repository.BoneRepository;
 import br.unitins.topicos1.bone.repository.EstoqueRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -20,6 +22,9 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     @Inject
     EstoqueRepository repository;
+
+    @Inject
+    BoneRepository boneRepository;
 
     @Override
     public List<EstoqueDTOResponse> findAll(int page, int pageSize) {
@@ -122,5 +127,36 @@ public class EstoqueServiceImpl implements EstoqueService {
             LOG.errorf(e, "Erro ao adicionar quantidade ao estoque ID: %d", id);
             throw e;
         }
+    }
+
+    @Override
+    public EstoqueDTOResponse findByIdBone(Long boneId){
+        LOG.infof("Buscando estoque pelo ID do boné: %d", boneId);
+    
+        try{
+            Bone bone = boneRepository.findById(boneId);
+        
+            if (bone == null) {
+                LOG.warnf("Boné ID %d não encontrado", boneId);
+                return null;
+            }
+        
+            Estoque estoque = bone.getEstoque();
+        
+            if(estoque == null){
+                LOG.warnf("Estoque para boné ID %d não encontrado", boneId);
+                return null;
+            }
+        
+            return EstoqueDTOResponse.valueOf(estoque);
+        
+        }catch(Exception e){
+            LOG.errorf(e, "Erro ao buscar estoque para boné ID: %d", boneId);
+            throw e;
+        }
+    }
+
+    @Override    public long count(){
+        return repository.count();
     }
 }

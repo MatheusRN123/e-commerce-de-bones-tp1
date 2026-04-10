@@ -83,4 +83,13 @@ public class EstampaResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GET
+    @Path("/count")
+    public Response count() {
+        LOG.info("Requisição para contar estampas");
+        long count = service.count();
+        LOG.infof("Total de estampas: %d", count);
+        return Response.ok(count).build();
+    }
 }

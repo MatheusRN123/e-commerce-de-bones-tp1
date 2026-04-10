@@ -12,6 +12,10 @@ public class EstoqueRepository implements PanacheRepository<Estoque> {
         return find("SELECT e FROM Estoque e WHERE e.quantidade = ?1 ", quantidade);
     }
 
+    public Estoque findByBoneId(Long boneId) {
+        return find("SELECT e FROM Estoque e WHERE e.bone.id = ?1", boneId).firstResult();
+    }
+
     @Override
     public PanacheQuery<Estoque> findAll() {
        return find("SELECT e FROM Estoque e ORDER BY e.quantidade");

@@ -93,7 +93,28 @@ public class EstoqueResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @GET
+    @Path("/bone/{boneId}")
+    @RolesAllowed("ADM")
+    public Response buscarPorBoneId(@PathParam("boneId") Long boneId) {
 
+        LOG.infof("Requisição para buscar estoque pelo ID do boné: %d", boneId);
+        try {
+            EstoqueDTOResponse estoque = service.findByIdBone(boneId);
+
+            if (estoque == null) {
+                LOG.warnf("Estoque para boné ID %d não encontrado", boneId);
+                return Response.status(Status.NOT_FOUND).build();
+            }
+
+            return Response.ok(estoque).build();
+
+        } catch (Exception e) {
+            LOG.errorf(e, "Erro ao buscar estoque para boné ID: %d", boneId);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+
+        }
+    }
     @PUT
     @Path("/{id}/quantidade")
     @RolesAllowed("ADM")
@@ -122,5 +143,14 @@ public class EstoqueResource {
             LOG.errorf(e, "Erro ao adicionar quantidade ao estoque ID: %d", id);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GET
+    @Path("/count")
+    public Response count() {
+        LOG.info("Requisição para contar estoques");
+        long count = service.count();
+        LOG.infof("Total de estoques: %d", count);
+        return Response.ok(count).build();
     }
 }

@@ -9,4 +9,5 @@ public interface EstampaService {
     List<EstampaDTOResponse> findAll(int page, int pageSize);
     List<EstampaDTOResponse> findByNome(String nome);
     EstampaDTOResponse findById(Long id);
+    long count();
 }

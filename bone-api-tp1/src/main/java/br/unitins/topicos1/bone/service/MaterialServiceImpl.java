@@ -99,4 +99,9 @@ public class MaterialServiceImpl implements MaterialService {
         repository.deleteById(id);
         LOG.infof("Material ID %d deletado com sucesso", id);
     }
+
+    @Override
+    public long count(){
+        return repository.count();
+    }
 }

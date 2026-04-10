@@ -94,6 +94,15 @@ public class ModeloResource {
         return Response.noContent().build();
     }
 
+    @GET
+    @Path("/count")
+    public Response count() {
+        LOG.info("Requisição para contar modelos");
+        long count = service.count();
+        LOG.infof("Total de modelos: %d", count);
+        return Response.ok(count).build();
+    }
+
     @DELETE
     @Path("/{id}")
     @RolesAllowed("ADM")

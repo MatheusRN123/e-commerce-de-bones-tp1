@@ -11,7 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class EstampaRepository implements PanacheRepository<Estampa> {
     
     public PanacheQuery<Estampa> findByNome(String nome){
-        return find("SELECT e FROM Estampa e WHERE e.nome LIKE ?1", "%" + nome + "%");
+        return find("SELECT e FROM Estampa e WHERE lower(e.nome) LIKE lower(?1)", "%" + nome + "%");
     }
 
     @Override

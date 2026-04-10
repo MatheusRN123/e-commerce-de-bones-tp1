@@ -107,4 +107,9 @@ public class ModeloServiceImpl implements ModeloService {
         repository.deleteById(id);
         LOG.infof("Modelo ID %d deletado com sucesso", id);
     }
+
+    @Override
+    public long count(){
+        return repository.count();
+    }
 }

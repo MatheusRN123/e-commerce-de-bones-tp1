@@ -9,7 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class ModeloRepository implements PanacheRepository<Modelo> {
     
     public PanacheQuery<Modelo> findByNome(String nome){
-        return find("SELECT m FROM Modelo m WHERE m.nome LIKE ?1", "%" + nome + "%");
+        return find("SELECT m FROM Modelo m WHERE lower(m.nome) LIKE lower(?1)", "%" + nome + "%");
     }
 
     @Override

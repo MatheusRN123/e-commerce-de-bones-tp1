@@ -83,4 +83,9 @@ public class EstampaServiceImpl implements EstampaService {
             throw e;
         }
     }
+
+    @Override
+    public long count(){
+        return repository.count();
+    }
 }

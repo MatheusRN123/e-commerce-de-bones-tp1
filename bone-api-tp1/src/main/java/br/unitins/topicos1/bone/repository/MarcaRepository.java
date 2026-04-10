@@ -9,7 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class MarcaRepository implements PanacheRepository<Marca> {
     
     public PanacheQuery<Marca> findByNome(String nome){
-        return find("SELECT m FROM Marca m WHERE m.nome LIKE ?1 ", "%"+nome+"%");
+        return find("SELECT m FROM Marca m WHERE lower(m.nome) LIKE lower(?1) ", "%"+nome+"%");
     }
 
     @Override

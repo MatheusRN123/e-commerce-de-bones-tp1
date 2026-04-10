@@ -9,7 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class MaterialRepository implements PanacheRepository<Material> {
     
     public PanacheQuery<Material> findByNome(String nome){
-        return find("SELECT m FROM Material m WHERE m.nome LIKE ?1 ", "%"+nome+"%");
+        return find("SELECT m FROM Material m WHERE lower(m.nome) LIKE lower(?1) ", "%"+nome+"%");
     }
 
     @Override
