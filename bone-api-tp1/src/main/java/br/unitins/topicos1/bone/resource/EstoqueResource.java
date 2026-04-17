@@ -93,6 +93,7 @@ public class EstoqueResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+    
     @GET
     @Path("/bone/{boneId}")
     @RolesAllowed("ADM")

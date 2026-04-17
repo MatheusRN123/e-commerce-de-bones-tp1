@@ -1,9 +1,9 @@
 @startuml
 skinparam classAttributeIconSize 0
+skinparam linetype ortho
 
-' =======================
-' ENUMS
-' =======================
+title Diagrama de Classes - Sistema de Controle de Bonés
+
 enum Bordado {
   COM_BORDADO
   SEM_BORDADO
@@ -15,9 +15,6 @@ enum Perfil {
   USER
 }
 
-' =======================
-' CLASSES
-' =======================
 class Bone {
   - id: Long
   - nome: String
@@ -26,15 +23,8 @@ class Bone {
   - tamanhoAba: Float
   - profundidade: Float
   - circunferencia: String
-}
-
-class Estoque {
-  - id: Long
-  - quantidade: Integer
-  - dataAtualizacao: LocalDate
-  + verificarDisponibilidade(): Boolean
-  + atualizarQuantidade(qtd: Integer): void
-  + adicionarQuantidade(qtd: Integer): void
+  - bordado: Bordado
+  - preco: Double
 }
 
 class Marca {
@@ -59,6 +49,7 @@ abstract class Estampa {
   - nome: String
   - posicao: String
   - descricao: String
+  + getTipo(): String
 }
 
 class EstampaBordada {
@@ -70,16 +61,13 @@ class EstampaDigital {
   - resolucao: String
 }
 
-class Pedido {
-  - id: Long
-  - data: LocalDateTime
-}
-
-class ItemPedido {
+class Estoque {
   - id: Long
   - quantidade: Integer
-  - preco: Double
-  + getSubTotal(): Double
+  - dataAtualizacao: LocalDate
+  + verificarDisponibilidade(): Boolean
+  + atualizarQuantidade(quantidade: Integer): void
+  + adicionarQuantidade(quantidade: Integer): void
 }
 
 class Usuario {
@@ -87,18 +75,7 @@ class Usuario {
   - nome: String
   - login: String
   - senha: String
-}
-
-class Endereco {
-  - id: Long
-  - cep: String
-  - logradouro: String
-  - numero: String
-}
-
-class Cidade {
-  - id: Long
-  - nome: String
+  - perfil: Perfil
 }
 
 class Estado {
@@ -107,11 +84,29 @@ class Estado {
   - sigla: String
 }
 
+class Cidade {
+  - id: Long
+  - nome: String
+}
+
+class Endereco {
+  - id: Long
+  - cep: String
+  - logradouro: String
+  - numero: String
+  - nomeDestinatario: String
+}
+
 abstract class Pagamento {
   - id: Long
   - valor: Double
   - data: LocalDateTime
   - status: String
+}
+
+class Pix {
+  - chave: String
+  - tipoChave: String
 }
 
 class Cartao {
@@ -126,47 +121,48 @@ class Boleto {
   - dataVencimento: LocalDate
 }
 
-class Pix {
-  - chave: String
-  - tipoChave: String
+class Pedido {
+  - id: Long
+  - data: LocalDateTime
+  - cep: String
+  - logradouro: String
+  - numero: String
+  - cidade: String
+  - estado: String
+  + getValorTotal(): Double
 }
 
-' =======================
-' HERANÇA
-' =======================
+class ItemPedido {
+  - id: Long
+  - quantidade: Integer
+  - preco: Double
+  + getSubTotal(): Double
+}
+
 Estampa <|-- EstampaBordada
 Estampa <|-- EstampaDigital
 
+Pagamento <|-- Pix
 Pagamento <|-- Cartao
 Pagamento <|-- Boleto
-Pagamento <|-- Pix
 
-' =======================
-' RELACIONAMENTOS COM ATRIBUTOS
-' =======================
+Bone "0..*" o-- "1" Marca
+Bone "0..*" o-- "1" Material
+Bone "0..*" o-- "1" Modelo
 
-Bone "1" *-- "1" Estoque : estoque
-Bone "*" -- "1" Marca : marca
-Bone "*" -- "1" Material : material
-Bone "*" -- "1" Modelo : modelo
-Bone "*" -- "*" Estampa : estampas
+Bone "1" *-- "1" Estoque
+Bone "0..*" -- "0..*" Estampa
 
-Pedido "1" *-- "*" ItemPedido : itens
-ItemPedido "*" -- "1" Bone : bone
+Estado "1" --> "0..*" Cidade
+Cidade "1" --> "0..*" Endereco
+Usuario "1" --> "0..*" Endereco
 
-Pedido "*" -- "1" Usuario : usuario
-Pedido "*" o-- "1" Endereco : endereco
+Usuario "1" --> "0..*" Pedido
+Pedido "1" *-- "1" Pagamento
+Pedido "1" *-- "1..*" ItemPedido
+ItemPedido "0..*" --> "1" Bone
 
-Endereco "*" -- "1" Cidade : cidade
-Cidade "*" -- "1" Estado : estado
-
-Pedido "1" *-- "1" Pagamento : pagamento
-
-' =======================
-' DEPENDÊNCIA COM ENUMS
-' =======================
-
-Usuario ..> Perfil : perfil
-Bone ..> Bordado : bordado
+Bone ..> Bordado
+Usuario ..> Perfil
 
 @enduml

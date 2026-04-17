@@ -1,0 +1,59 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Administrador" as Admin
+actor "Usuário" as User
+
+rectangle "Sistema de Controle de Bonés" {
+
+  usecase "Realizar Login" as UC1
+
+  package "Catálogo" {
+    usecase "Gerenciar Bonés" as UC2
+    usecase "Gerenciar Marcas" as UC3
+    usecase "Gerenciar Materiais" as UC4
+    usecase "Gerenciar Modelos" as UC5
+    usecase "Gerenciar Estampas" as UC6
+  }
+
+  package "Estoque" {
+    usecase "Gerenciar Estoque" as UC7
+  }
+
+  package "Localização" {
+    usecase "Gerenciar Estados" as UC8
+    usecase "Gerenciar Cidades" as UC9
+    usecase "Gerenciar Endereços" as UC10
+  }
+
+  package "Usuários" {
+    usecase "Gerenciar Usuários" as UC11
+  }
+
+  package "Pedidos" {
+    usecase "Gerenciar Pedidos" as UC12
+    usecase "Gerenciar Pagamentos" as UC13
+  }
+}
+
+Admin --> UC1
+User --> UC1
+
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6
+Admin --> UC7
+Admin --> UC8
+Admin --> UC9
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+Admin --> UC13
+
+User --> UC10
+User --> UC12
+
+@enduml
