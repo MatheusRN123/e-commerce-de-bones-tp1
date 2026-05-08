@@ -53,19 +53,4 @@ public class EstampaBordadaResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    @DELETE
-    @Path("/{id}")
-    @RolesAllowed("ADM")
-    public Response apagar(Long id) {
-        LOG.infof("Requisição para deletar estampa bordada ID: %d", id);
-        try {
-            service.delete(id);
-            LOG.infof("Estampa bordada ID %d deletada com sucesso", id);
-            return Response.noContent().build();
-        } catch (Exception e) {
-            LOG.errorf(e, "Erro ao deletar estampa bordada ID: %d", id);
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 }

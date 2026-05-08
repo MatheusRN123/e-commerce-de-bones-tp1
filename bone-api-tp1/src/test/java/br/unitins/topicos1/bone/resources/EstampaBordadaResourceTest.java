@@ -57,16 +57,4 @@ class EstampaBordadaResourceTest {
         assertEquals(204, response.getStatus());
         verify(service).update(id, dto);
     }
-
-    @Test
-    void testApagar() {
-        Long id = 3L;
-
-        doNothing().when(service).delete(id);
-
-        Response response = resource.apagar(id);
-
-        assertEquals(204, response.getStatus());
-        verify(service).delete(id);
-    }
 }

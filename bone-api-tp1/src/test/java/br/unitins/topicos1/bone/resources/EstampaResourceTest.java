@@ -2,16 +2,23 @@ package br.unitins.topicos1.bone.resources;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.unitins.topicos1.bone.model.EstampaBordada;
 import br.unitins.topicos1.bone.repository.EstampaBordadaRepository;
+import br.unitins.topicos1.bone.resource.EstampaResource;
+import br.unitins.topicos1.bone.service.EstampaService;
 import br.unitins.topicos1.bone.service.JwtService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.Response;
 import io.quarkus.test.security.TestSecurity;
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -23,6 +30,12 @@ public class EstampaResourceTest {
 
     @Inject
     EstampaBordadaRepository bordadaRepo;
+
+    @Inject
+    EstampaResource resource;
+
+    @InjectMock
+    EstampaService service;
 
     private Long idEstampa;
 
@@ -71,5 +84,17 @@ public class EstampaResourceTest {
             .statusCode(anyOf(is(200), is(404)))
             .body("id", equalTo(idEstampa.intValue  ())) // converte para int, pois RestAssured   compara com JSON numbers
             .body("nome", notNullValue());
-}
+    }
+
+    @Test
+    void testApagar() {
+        Long id = 2L;
+
+        doNothing().when(service).delete(id);
+
+        Response response = resource.deletarEstampa(id);
+
+        assertEquals(204, response.getStatus());
+        verify(service).delete(id);
+    }
 }

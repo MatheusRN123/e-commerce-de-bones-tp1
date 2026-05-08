@@ -53,19 +53,4 @@ public class EstampaDigitalResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    @DELETE
-    @Path("/{id}")
-    @RolesAllowed("ADM")
-    public Response apagar(Long id) {
-        LOG.infof("Requisição para deletar estampa digital ID: %d", id);
-        try {
-            service.delete(id);
-            LOG.infof("Estampa digital ID %d deletada com sucesso", id);
-            return Response.noContent().build();
-        } catch (Exception e) {
-            LOG.errorf(e, "Erro ao deletar estampa digital ID: %d", id);
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 }

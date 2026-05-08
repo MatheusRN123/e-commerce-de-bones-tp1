@@ -92,4 +92,19 @@ public class EstampaResource {
         LOG.infof("Total de estampas: %d", count);
         return Response.ok(count).build();
     }
+
+    @DELETE
+    @Path("/{id}")
+    @RolesAllowed({"ADM"})
+    public Response deletarEstampa(@PathParam("id") Long id) {
+        LOG.infof("Requisição para deletar estampa ID: %d", id);
+        try {
+            service.delete(id);
+            LOG.infof("Estampa ID %d deletada com sucesso", id);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            LOG.errorf(e, "Erro ao deletar estampa ID: %d", id);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

@@ -106,7 +106,7 @@ public class ModeloResource {
     @DELETE
     @Path("/{id}")
     @RolesAllowed("ADM")
-    public Response apagarModelo(Long id) {
+    public Response deletarModelo(Long id) {
         LOG.infof("Requisição DELETE /modelos/%d", id);
         service.delete(id);
         LOG.infof("Modelo ID %d deletado com sucesso", id);

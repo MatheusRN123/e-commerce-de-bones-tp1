@@ -10,4 +10,5 @@ public interface EstampaService {
     List<EstampaDTOResponse> findByNome(String nome);
     EstampaDTOResponse findById(Long id);
     long count();
+    void delete(Long id);
 }

@@ -106,7 +106,7 @@ public class MarcaResource {
     @DELETE
     @Path("/{id}")
     @RolesAllowed("ADM")
-    public Response apagarMarca(Long id) {
+    public Response deletarMarca(Long id) {
         LOG.infof("Requisição para deletar marca ID: %d", id);
         service.delete(id);
         LOG.infof("Marca ID %d deletada com sucesso", id);

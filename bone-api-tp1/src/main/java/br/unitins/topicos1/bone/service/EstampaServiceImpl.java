@@ -7,6 +7,7 @@ import br.unitins.topicos1.bone.model.Estampa;
 import br.unitins.topicos1.bone.repository.EstampaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import org.jboss.logging.Logger;
 import io.quarkus.panache.common.Page;
@@ -87,5 +88,23 @@ public class EstampaServiceImpl implements EstampaService {
     @Override
     public long count(){
         return repository.count();
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        LOG.infof("Deletando estampa ID: %d", id);
+        try {
+            Estampa estampa = repository.findById(id);
+            if (estampa == null) {
+                LOG.warnf("Estampa ID %d não encontrada para deleção", id);
+                throw new NotFoundException("Estampa não encontrada");
+            }
+            repository.deleteById(id);
+            LOG.infof("Estampa ID %d deletada com sucesso", id);
+        } catch (Exception e) {
+            LOG.errorf(e, "Erro ao deletar estampa ID: %d", id);
+            throw e;
+        }
     }
 }

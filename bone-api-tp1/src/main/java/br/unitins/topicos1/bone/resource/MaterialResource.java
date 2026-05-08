@@ -106,7 +106,7 @@ public class MaterialResource {
     @DELETE
     @Path("/{id}")
     @RolesAllowed("ADM")
-    public Response apagarMaterial(Long id) {
+    public Response deletarMaterial(Long id) {
         LOG.infof("Requisição para deletar material ID: %d", id);
         service.delete(id);
         LOG.infof("Material ID %d deletado com sucesso", id);
