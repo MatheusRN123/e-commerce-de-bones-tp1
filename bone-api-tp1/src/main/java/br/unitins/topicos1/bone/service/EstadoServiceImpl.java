@@ -84,7 +84,7 @@ public class EstadoServiceImpl implements EstadoService {
             estado.setSigla(dto.sigla());
 
             if (dto.idsCidades() != null && !dto.idsCidades().isEmpty()) {
-                List<Cidade> cidades = cidadeRepository.findByIds(dto.idsCidades());
+                List<Cidade> cidades = cidadeRepository.listByIds(dto.idsCidades());
                 if (cidades.size() != dto.idsCidades().size()) {
                     LOG.error("Uma ou mais cidades informadas não existem.");
                     throw new IllegalArgumentException("Uma ou mais cidades informadas não existem.");
@@ -121,7 +121,7 @@ public class EstadoServiceImpl implements EstadoService {
                 return;
             }
 
-            List<Cidade> cidades = cidadeRepository.findByIds(dto.idsCidades());
+            List<Cidade> cidades = cidadeRepository.listByIds(dto.idsCidades());
             if (cidades.size() != dto.idsCidades().size()) {
                 LOG.error("Uma ou mais cidades informadas não existem.");
                 throw new IllegalArgumentException("Uma ou mais cidades informadas não existem.");

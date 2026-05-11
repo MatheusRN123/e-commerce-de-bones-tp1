@@ -19,11 +19,11 @@ public class EstampaRepository implements PanacheRepository<Estampa> {
        return find("SELECT e FROM Estampa e ORDER BY e.nome");
     }
 
-    public List<Estampa> findByIds(List<Long> ids) {
-        return list("id in ?1", ids);
+    public List<Estampa> listByIds(List<Long> ids) {
+        return find("SELECT e FROM Estampa e WHERE id IN ?1", ids).list();
     }
 
     public PanacheQuery<Estampa> findByTipo(String tipo) {
-        return find("tipo_estampa = ?1", tipo);
+        return find("SELECT e FROM Estampa e WHERE tipo_estampa = ?1", tipo);
     }
 }

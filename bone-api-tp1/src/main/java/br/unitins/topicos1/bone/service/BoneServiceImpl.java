@@ -170,7 +170,7 @@ public class BoneServiceImpl implements BoneService {
                 return BoneDTOResponse.valueOf(bone);
             }
 
-            List<Estampa> estampas = repositoryEstampa.findByIds(dto.idsEstampas());
+            List<Estampa> estampas = repositoryEstampa.listByIds(dto.idsEstampas());
 
             if (estampas.size() != dto.idsEstampas().size()) {
                 LOG.error("Uma ou mais estampas informadas não existem.");
@@ -236,7 +236,7 @@ public class BoneServiceImpl implements BoneService {
                 bone.getEstampas().clear();
                 LOG.debug("Limpeza de estampas do boné realizada");
             } else {
-                List<Estampa> estampas = repositoryEstampa.findByIds(dto.idsEstampas());
+                List<Estampa> estampas = repositoryEstampa.listByIds(dto.idsEstampas());
                 if (estampas.size() != dto.idsEstampas().size()) {
                     LOG.error("Uma ou mais estampas informadas não existem.");
                     throw new IllegalArgumentException("Uma ou mais estampas informadas não existem.");

@@ -1,3 +1,4 @@
+C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\dto\ArquivoResponseDTO.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\dto\AuthDTO.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\dto\AuthDTOResponse.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\dto\BoletoDTO.java
@@ -40,6 +41,7 @@ C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\exception\UncaughtExceptionMapper.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\exception\ValidationException.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\exception\ValidationExceptionMapper.java
+C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\model\Arquivo.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\model\Boleto.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\model\Bone.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\model\Bordado.java
@@ -62,6 +64,7 @@ C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\model\Perfil.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\model\Pix.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\model\Usuario.java
+C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\repository\ArquivoRepository.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\repository\BoneRepository.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\repository\CidadeRepository.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\repository\EnderecoRepository.java
@@ -91,6 +94,7 @@ C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\resource\PagamentoResource.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\resource\PedidoResource.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\resource\UsuarioResource.java
+C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\service\ArquivoDownload.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\service\BoneService.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\service\BoneServiceImpl.java
 C:\Users\Matheus\Documents\GitHub\e-commerce-de-bones-tp1\bone-api-tp1\src\main\java\br\unitins\topicos1\bone\service\CidadeService.java

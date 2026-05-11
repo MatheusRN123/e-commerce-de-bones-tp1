@@ -13,7 +13,7 @@ public class CidadeRepository implements PanacheRepository<Cidade> {
         return find("SELECT c FROM Cidade c WHERE c.nome LIKE ?1", "%" + nome + "%").list();
     }
 
-    public List<Cidade> findByIds(List<Long> ids) {
-        return find("id IN ?1", ids).list();
+    public List<Cidade> listByIds(List<Long> ids) {
+        return find("SELECT c FROM Cidade c WHERE id IN ?1", ids).list();
     }
 }
