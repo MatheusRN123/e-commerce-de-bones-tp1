@@ -42,5 +42,6 @@ public record BoneDTO(
     @NotNull(message = "O campo deve ser informado (back).")
     Double preco,
 
+    @NotNull(message = "O campo deve ser informado (back).")
     String imagemFid
 ) {}

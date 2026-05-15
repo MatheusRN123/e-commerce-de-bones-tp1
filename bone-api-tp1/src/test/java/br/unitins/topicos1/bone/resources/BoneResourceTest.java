@@ -61,6 +61,7 @@ public class BoneResourceTest {
             10,
             List.of(),
             150.0,
+            "fb3e1b6de8b605fa859b7ad7a18ebb4ec076e2564f82e76d1fe8e615f86a0af9"
             
         );
 
@@ -88,7 +89,8 @@ public class BoneResourceTest {
             1L,
             5,
             List.of(),
-            150.0
+            150.0,
+            "1b3e1b6de8b605fa859b7ad7a18ebb4ec076e2564f82e76d1fe8e615f86a0af9"
         );
 
         given()

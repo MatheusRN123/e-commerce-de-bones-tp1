@@ -8,5 +8,4 @@ public interface EstampaDigitalService {
     
     EstampaDigitalDTOResponse create(EstampaDigitalDTO dto);
     void update(Long id, EstampaDigitalDTO dto);
-    void delete(Long id);
 }

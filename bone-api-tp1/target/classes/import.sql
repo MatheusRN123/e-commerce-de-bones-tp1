@@ -1,7 +1,7 @@
 insert into modelo(nome, categoria, estilo)
 values
-('Challenge', 'Streetwear', 'Casual'),
-('Trucker', 'Streetwear', 'Casual'),
+('Challenge', 'Casual', 'Streetwear'),
+('Trucker', 'Casual', 'Streetwear'),
 ('teste', 'teste', 'teste');
 
 insert into material(nome)

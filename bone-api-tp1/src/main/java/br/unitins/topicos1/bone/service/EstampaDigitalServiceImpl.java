@@ -60,17 +60,4 @@ public class EstampaDigitalServiceImpl implements EstampaDigitalService {
             throw e;
         }
     }
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        LOG.infof("Deletando estampa digital ID: %d", id);
-        try {
-            repository.deleteById(id);
-            LOG.infof("Estampa digital ID %d deletada com sucesso", id);
-        } catch (Exception e) {
-            LOG.errorf(e, "Erro ao deletar estampa digital ID: %d", id);
-            throw e;
-        }
-    }
 }

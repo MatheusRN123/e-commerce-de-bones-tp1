@@ -62,17 +62,4 @@ public class EstampaBordadaServiceImpl implements EstampaBordadaService {
             throw e;
         }
     }
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        LOG.infof("Deletando estampa bordada ID: %d", id);
-        try {
-            repository.deleteById(id);
-            LOG.infof("Estampa bordada ID %d deletada com sucesso", id);
-        } catch (Exception e) {
-            LOG.errorf(e, "Erro ao deletar estampa bordada ID: %d", id);
-            throw e;
-        }
-    }
 }
