@@ -1,6 +1,7 @@
 package br.unitins.topicos1.bone.model;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,8 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Estoque {
+
+    private static final ZoneId ZONA_BRASIL = ZoneId.of("America/Sao_Paulo");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +39,7 @@ public class Estoque {
 
     public void atualizarQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
-        this.dataAtualizacao = LocalDate.now();
+        this.dataAtualizacao = LocalDate.now(ZONA_BRASIL);
     }
 
     public void adicionarQuantidade(Integer quantidade){
@@ -45,7 +48,7 @@ public class Estoque {
         }
 
         this.quantidade += quantidade;
-        this.dataAtualizacao = LocalDate.now();
+        this.dataAtualizacao = LocalDate.now(ZONA_BRASIL);
     }
 
 
@@ -55,6 +58,7 @@ public class Estoque {
 
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
+        this.dataAtualizacao = LocalDate.now(ZONA_BRASIL);
     }
 
     public LocalDate getDataAtualizacao() {

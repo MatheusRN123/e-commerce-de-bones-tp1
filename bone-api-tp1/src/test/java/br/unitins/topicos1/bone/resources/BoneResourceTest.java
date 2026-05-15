@@ -60,7 +60,8 @@ public class BoneResourceTest {
             1L,
             10,
             List.of(),
-            150.0
+            150.0,
+            
         );
 
         given()

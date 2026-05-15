@@ -10,6 +10,8 @@ public record BoneDTOResponse(
     Long id,
     String nome,
     String cor,
+    String imagemFid,
+    String imagemUrl,
     String nomeMaterial,
     String categoriaAba,
     Float tamanhoAba,
@@ -36,10 +38,15 @@ public record BoneDTOResponse(
             return null;
         }).toList() : null;
 
+        String imagemFid = bone.getImagemFid();
+        String imagemUrl = imagemFid != null ? "/arquivos/download/" + imagemFid : null;
+
         return new BoneDTOResponse(
             bone.getId(),
             bone.getNome(),
             bone.getCor(),
+            imagemFid,
+            imagemUrl,
             bone.getMaterial().getNome(),
             bone.getCategoriaAba(),
             bone.getTamanhoAba(),

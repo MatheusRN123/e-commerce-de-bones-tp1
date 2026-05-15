@@ -40,5 +40,7 @@ public record BoneDTO(
     List<Long> idsEstampas,
 
     @NotNull(message = "O campo deve ser informado (back).")
-    Double preco
+    Double preco,
+
+    String imagemFid
 ) {}

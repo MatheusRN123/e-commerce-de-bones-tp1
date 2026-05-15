@@ -68,6 +68,9 @@ public class Bone {
     )
     private List<Estampa> estampas;
 
+    @Column(name = "imagem_fid")
+    private String imagemFid;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_estoque")
     @NotNull
@@ -186,5 +189,13 @@ public class Bone {
     public void setPreco(Double preco){
         this.preco = preco;
     }
-    
+
+    public String getImagemFid() {
+        return imagemFid;
+    }
+
+    public void setImagemFid(String imagemFid) {
+        this.imagemFid = imagemFid;
+    }
 }
+

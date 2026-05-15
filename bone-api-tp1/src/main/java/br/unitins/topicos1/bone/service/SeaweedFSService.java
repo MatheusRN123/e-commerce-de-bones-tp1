@@ -27,32 +27,30 @@ public class SeaweedFSService {
     @Inject
     HashService hashService;
 
+    @ConfigProperty(name = "seaweedfs.volume.url")
+    String volumeUrl;
+
     private HttpClient httpClient = HttpClient.newHttpClient();
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public ArquivoUploadResponse uploadFile(byte[] fileContent, String fileName) throws IOException {
         try {
-            String fid = obterFid();
-            String url = masterUrl + "/" + fid;
-            
+            String[] fidEUrl = obterFidEUrl();
+            String fid = fidEUrl[0];
+            String volumeUrl = "http://" + fidEUrl[1] + "/" + fid;
+
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(URI.create(volumeUrl))
                 .POST(HttpRequest.BodyPublishers.ofByteArray(fileContent))
                 .header("Content-Type", "application/octet-stream")
                 .build();
-            
+
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            
+
             if (response.statusCode() >= 200 && response.statusCode() < 300) {
                 String sha256 = hashService.gerarSHA256(fileContent);
-                
-                return new ArquivoUploadResponse(
-                    fid,
-                    fileName,
-                    "application/octet-stream",
-                    (long) fileContent.length,
-                    sha256
-                );
+                return new ArquivoUploadResponse(fid, fileName, "application/octet-stream",
+                        (long) fileContent.length, sha256);
             } else {
                 throw new IOException("Erro ao fazer upload: " + response.statusCode());
             }
@@ -66,43 +64,17 @@ public class SeaweedFSService {
         }
     }
 
-    private String obterFid() throws IOException {
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(masterUrl + "/dir/assign"))
-                .GET()
-                .build();
-            
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            
-            if (response.statusCode() == 200) {
-                JsonNode root = objectMapper.readTree(response.body());
-                String fid = root.get("fid").asText();
-                return fid;
-            } else {
-                throw new IOException("Erro ao obter FID: " + response.statusCode());
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            Log.error("Erro ao obter FID do SeaweedFS", e);
-            throw new IOException("Erro ao obter FID", e);
-        } catch (Exception e) {
-            Log.error("Erro ao obter FID do SeaweedFS", e);
-            throw new IOException("Erro ao obter FID", e);
-        }
-    }
-
     public byte[] downloadFile(String fid) throws IOException {
         try {
-            String url = masterUrl + "/" + fid;
-            
+            String downloadUrl = "http://" + volumeUrl + "/" + fid;
+
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(URI.create(downloadUrl))
                 .GET()
                 .build();
-            
-            HttpResponse<byte[]> response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray());
-            
+
+            HttpResponse<byte[]> response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray  ());
+
             if (response.statusCode() == 200) {
                 return response.body();
             } else {
@@ -110,11 +82,33 @@ public class SeaweedFSService {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            Log.error("Erro ao fazer download no SeaweedFS", e);
             throw new IOException("Erro ao fazer download", e);
         } catch (Exception e) {
             Log.error("Erro ao fazer download no SeaweedFS", e);
             throw new IOException("Erro ao fazer download", e);
+        }
+    }
+
+    private String[] obterFidEUrl() throws IOException {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(masterUrl + "/dir/assign"))
+                .GET()
+                .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JsonNode root = objectMapper.readTree(response.body());
+                String fid = root.get("fid").asText();
+                // Ignora a URL interna do Docker, usa a porta mapeada do volume
+                return new String[]{fid, volumeUrl};
+            } else {
+                throw new IOException("Erro ao obter FID: " + response.statusCode());
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Erro ao obter FID", e);
         }
     }
 
@@ -125,8 +119,8 @@ public class SeaweedFSService {
         public Long tamanhoBytes;
         public String sha256;
 
-        public ArquivoUploadResponse(String fid, String nomeOriginal, String mimeType, 
-                                    Long tamanhoBytes, String sha256) {
+        public ArquivoUploadResponse(String fid, String nomeOriginal, String mimeType,
+                                     Long tamanhoBytes, String sha256) {
             this.fid = fid;
             this.nomeOriginal = nomeOriginal;
             this.mimeType = mimeType;

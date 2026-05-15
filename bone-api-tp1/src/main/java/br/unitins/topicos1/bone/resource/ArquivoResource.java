@@ -2,10 +2,10 @@ package br.unitins.topicos1.bone.resource;
 
 import java.io.IOException;
 
-import br.unitins.topicos1.bone.dto.ArquivoForm;
 import br.unitins.topicos1.bone.dto.ArquivoResponseDTO;
 import br.unitins.topicos1.bone.service.ArquivoUploadService;
 import io.quarkus.logging.Log;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -16,6 +16,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 @Path("/arquivos")
@@ -27,9 +29,10 @@ public class ArquivoResource {
 
     @POST
     @Path("/upload")
+    @RolesAllowed("ADM")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response upload(FileUpload arquivo) {
+    public Response upload(@RestForm("arquivo") FileUpload arquivo) {
         try {
             Log.info("Iniciando upload do arquivo: " + arquivo.fileName());
             
